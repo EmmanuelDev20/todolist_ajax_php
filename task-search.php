@@ -1,0 +1,24 @@
+<?php
+
+include "db.php";
+
+$search = $_POST['search'];
+
+if(!empty($search)) {
+    $query = "SELECT * FROM task WHERE name LIKE '$search%'";
+    $result = mysqli_query($conn, $query);
+    if(!$result){
+        die('Query error' . mysqli_error($conn));
+    }
+
+    $json = array();
+    while($row = mysqli_fetch_array($result)) {
+        $json[] = array(
+            'name' => $row['name'],
+            'description' => $row['descripcion'],
+            'id' => $row['id']
+        );
+    }
+    $json_string = json_encode($json);
+    echo $json_string;
+}
